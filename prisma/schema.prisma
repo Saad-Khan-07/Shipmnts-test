@@ -13,3 +13,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Location{
+  AHMEDABAD
+  MUMBAI
+  DELHI
+}
+
+model Store{
+  store_location Location @id
+  currency String @default("INR")
+  tax_percentage Float
+  premium_items String[]
+  plan Plan?
+}
+
+model Plan{
+  plan_id String @id 
+  store Store @relation(fields: [location], references: [store_location])
+  location Location @unique
+  valid_from String
+  valid_to String
+  category String
+  name String
+  half_price Int
+  full_price Int
+  extra_charge Int
+}
